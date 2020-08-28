@@ -17,6 +17,8 @@ public class SpringCloudOpenFeignTestDemoApplication {
     private final SearchEngineForUnitTest searchEngineForUnitTest;
     @NonNull
     private final SearchEngineForStubTest searchEngineForStubTest;
+    @NonNull
+    private final SearchEngineWithFallbackForUnitTest searchEngineWithFallbackForUnitTest;
 
     public static void main(String[] args) {
         SpringApplication.run(SpringCloudOpenFeignTestDemoApplication.class, args);
@@ -26,5 +28,8 @@ public class SpringCloudOpenFeignTestDemoApplication {
     private void postConstruct() {
         searchEngineForUnitTest.index();
         searchEngineForStubTest.index();
+        if (!searchEngineWithFallbackForUnitTest.index().equals("Fallback triggered")) {
+            throw new RuntimeException("Unexpected fallback triggered");
+        }
     }
 }
